@@ -18,9 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -77,7 +75,7 @@ private val paleBlue = Color(0xFFEAF0FF)
 private data class Exercise(val id: String, val title: String, val subtitle: String, val number: String)
 
 private val exercises = listOf(
-    Exercise("image-processing", "پردازش تصویر", "تمرین استاد نیکروان", "۰۱")
+    Exercise("image-processing", "پردازش تصویر", "تمرین", "۰۱")
 )
 
 fun main() = application {
@@ -176,11 +174,14 @@ private fun ImageExercise(modifier: Modifier = Modifier) {
     var busy by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    Column(modifier.verticalScroll(rememberScrollState()).padding(32.dp), verticalArrangement = Arrangement.spacedBy(22.dp)) {
+    Column(
+        modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
         Column {
             Text("تمرین ۰۱ / پردازش تصویر", style = MaterialTheme.typography.labelLarge, color = accent)
-            Spacer(Modifier.height(6.dp))
-            Text("پردازش تصویر", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(2.dp))
+            Text("پردازش تصویر", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Text(
                 "استخراج پیکسل‌ها، تبدیل به خاکستری و هموارسازی تصویر با فیلتر میانگین‌گیر",
                 style = MaterialTheme.typography.bodyMedium,
@@ -190,12 +191,12 @@ private fun ImageExercise(modifier: Modifier = Modifier) {
 
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.White),
-            shape = RoundedCornerShape(24.dp),
+            shape = RoundedCornerShape(18.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         ) {
-            Column(Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
-                Text("انتخاب و پردازش تصویر", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                Text("یک تصویر انتخاب کنید؛ دادهٔ خام آن در آرایه ذخیره و نسخهٔ خاکستری ساخته می‌شود.", color = muted)
+            Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("انتخاب و پردازش تصویر", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                Text("دادهٔ خام در آرایه ذخیره و نسخهٔ خاکستری ساخته می‌شود.", style = MaterialTheme.typography.bodySmall, color = muted)
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
                     Button(
                         onClick = {
@@ -217,7 +218,7 @@ private fun ImageExercise(modifier: Modifier = Modifier) {
                             }
                         },
                         enabled = !busy,
-                        contentPadding = PaddingValues(horizontal = 22.dp, vertical = 12.dp),
+                        contentPadding = PaddingValues(horizontal = 18.dp, vertical = 8.dp),
                     ) { Text("انتخاب فایل") }
                     Text(image?.fileName ?: "هنوز فایلی انتخاب نشده است", style = MaterialTheme.typography.bodyMedium, color = muted)
                 }
@@ -252,7 +253,7 @@ private fun ImageExercise(modifier: Modifier = Modifier) {
                             }
                         },
                         enabled = image != null && !busy,
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
+                        contentPadding = PaddingValues(horizontal = 18.dp, vertical = 8.dp),
                     ) { Text("Smooth / هموارسازی") }
                     }
                     if (compact) {
@@ -277,12 +278,12 @@ private fun ImageExercise(modifier: Modifier = Modifier) {
         BoxWithConstraints(Modifier.fillMaxWidth()) {
             val outputSubtitle = if (appliedMethod == null) "Grayscale" else "Smooth · ${appliedMethod?.title}"
             if (maxWidth < 760.dp) {
-                Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     ImagePanel("تصویر ورودی", "Input image", image?.preview, Modifier.fillMaxWidth())
                     ImagePanel("تصویر خروجی", outputSubtitle, output, Modifier.fillMaxWidth())
                 }
             } else {
-                Row(horizontalArrangement = Arrangement.spacedBy(18.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     ImagePanel("تصویر ورودی", "Input image", image?.preview, Modifier.weight(1f))
                     ImagePanel("تصویر خروجی", outputSubtitle, output, Modifier.weight(1f))
                 }
@@ -324,19 +325,19 @@ private fun ImagePanel(title: String, subtitle: String, image: ImageBitmap?, mod
     Card(
         modifier,
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(18.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
-        Column(Modifier.fillMaxWidth().padding(18.dp)) {
+        Column(Modifier.fillMaxWidth().padding(14.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                 Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(subtitle, style = MaterialTheme.typography.labelMedium, color = accent)
             }
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(8.dp))
             Box(
-                Modifier.fillMaxWidth().height(320.dp).clip(RoundedCornerShape(18.dp))
+                Modifier.fillMaxWidth().height(220.dp).clip(RoundedCornerShape(14.dp))
                     .background(Color(0xFFF4F6FA))
-                    .border(1.dp, Color(0xFFE4E9F2), RoundedCornerShape(18.dp)),
+                    .border(1.dp, Color(0xFFE4E9F2), RoundedCornerShape(14.dp)),
                 contentAlignment = Alignment.Center,
             ) {
                 if (image == null) {
@@ -345,7 +346,7 @@ private fun ImagePanel(title: String, subtitle: String, image: ImageBitmap?, mod
                     Image(
                         bitmap = image,
                         contentDescription = title,
-                        modifier = Modifier.fillMaxSize().padding(12.dp),
+                        modifier = Modifier.fillMaxSize().padding(8.dp),
                         contentScale = ContentScale.Fit,
                     )
                 }
@@ -358,19 +359,15 @@ private fun ImagePanel(title: String, subtitle: String, image: ImageBitmap?, mod
 private fun PixelInfo(image: LoadedImage) {
     Card(
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(18.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
-        Column(Modifier.fillMaxWidth().padding(22.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text("دادهٔ خام تصویر", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text("دادهٔ خام تصویر", style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
             Text(
                 "${image.raw.width} × ${image.raw.height} پیکسل  ·  ${image.raw.pixels.size} مقدار ARGB در آرایه",
                 color = muted,
             )
-            val preview = image.raw.pixels.take(8).joinToString("   ") { pixel ->
-                "0x" + pixel.toUInt().toString(16).padStart(8, '0').uppercase()
-            }
-            Text("نمونهٔ ۸ مقدار اول: $preview", style = MaterialTheme.typography.bodySmall, color = muted)
             Text("مرزهای فیلتر ۳×۳ با تکرار نزدیک‌ترین پیکسل محاسبه می‌شوند.", style = MaterialTheme.typography.bodySmall, color = muted)
         }
     }

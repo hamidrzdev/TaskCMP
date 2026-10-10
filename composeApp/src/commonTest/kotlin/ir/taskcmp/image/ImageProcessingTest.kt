@@ -12,17 +12,17 @@ class ImageProcessingTest {
     }
 
     @Test
-    fun meanUsesAllNineSamples() {
+    fun meanUsesOnlyTheEightNeighbours() {
         val pixels = IntArray(9) { 0xff000000.toInt() }
         pixels[4] = 0xff5a5a5a.toInt()
-        val output = ImageProcessing.smooth(PixelImage(3, 3, pixels), SmoothMethod.MEAN_3X3)
-        assertEquals(10, output.pixels[4] and 0xff)
+        val output = ManualMean3x3Smoother().smooth(PixelImage(3, 3, pixels))
+        assertEquals(0, output.pixels[4] and 0xff)
     }
 
     @Test
     fun borderReplicatesNearestPixel() {
         val pixels = intArrayOf(0xff000000.toInt(), 0xff5a5a5a.toInt())
         val output = ImageProcessing.smooth(PixelImage(2, 1, pixels), SmoothMethod.MEAN_3X3)
-        assertContentEquals(intArrayOf(30, 60), output.pixels.map { it and 0xff }.toIntArray())
+        assertContentEquals(intArrayOf(33, 56), output.pixels.map { it and 0xff }.toIntArray())
     }
 }
